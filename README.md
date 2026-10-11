@@ -38,6 +38,13 @@ There is also:
 
 ## Quick start
 
+**One-click start:** double-click `start_lab.bat` (or run `python start.py`). It checks the
+required packages and shows a menu; pressing Enter opens the research interface at
+`http://localhost:8501` (the next free port if that one is busy). The menu also offers a
+health check, the test suite, the correctness lab, the book and the results summary. For
+scripting, run `python start.py <action>` with one of
+`ui | check | test | correctness | book | results | shell | env`.
+
 Requirements: Python ≥ 3.10, PyTorch ≥ 2.1 (CPU build is fine), numpy, pandas,
 matplotlib, psutil, pyyaml, pytest; streamlit for the UI. No installation step is
 needed, because `lab.py` adds `src/` to the path. (`pip install -e .` also works if
