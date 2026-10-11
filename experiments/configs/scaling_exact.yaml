@@ -1,0 +1,23 @@
+# E1: How do exact implementations scale with sequence length on this CPU?
+name: scaling_exact
+hypothesis: >
+  All exact methods have O(L^2 d) arithmetic. Materializing methods (naive, sdpa_math) show
+  O(L^2) memory growth; tiled/fused methods show O(L) growth beyond inputs. The Python tiled
+  implementation is slower than fused C++ kernels despite lower memory, because of per-tile
+  dispatch overhead and loss of operator fusion.
+methods:
+  - naive
+  - sdpa_math
+  - sdpa_flash_cpu
+  - {name: tiled, params: {q_tile: 128, kv_tile: 128}}
+  - {name: tiled_recompute, params: {q_tile: 128, kv_tile: 128}}
+grid: {B: [1], H: [4], L: [128, 256, 512, 1024, 2048, 4096], d: [64], dtype: [float32], causal: [false, true], threads: [4]}
+warmup: 2
+repeats: 7
+max_seconds_per_mode: 30
+stop_if_slower_than_s: 8.0
+mem_fraction: 0.5
+max_mem_gb: 2.5
+isolate: true
+# Before each config, wait (bounded) for other processes to go quiet; load is recorded either way.
+wait_for_quiet: {max_other_cores: 3.0, timeout_s: 10}

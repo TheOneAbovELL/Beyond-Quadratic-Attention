@@ -1,0 +1,19 @@
+# threads=1: these runs were made while other workloads on this machine kept ~12 logical CPUs busy; single-threaded
+# runs avoid OpenMP barrier stalls from descheduled threads, so contention degrades methods more evenly.
+# E5: Head dimension, batch*heads and dtype at fixed L.
+name: shapes_dtypes
+hypothesis: >
+  Time grows ~linearly in d and in B*H for exact methods. bfloat16 is NOT faster on this AVX2 CPU
+  (no native bf16 dot-product instructions), and may be slower due to conversions.
+methods:
+  - naive
+  - sdpa_flash_cpu
+  - {name: tiled, params: {q_tile: 128, kv_tile: 128}}
+grid: {B: [1, 4], H: [4], L: [1024], d: [16, 32, 64, 128], dtype: [float32, bfloat16], causal: [false], threads: [1]}
+warmup: 2
+repeats: 7
+max_seconds_per_mode: 20
+stop_if_slower_than_s: 60
+isolate: false
+# Before each config, wait (bounded) for other processes to go quiet; load is recorded either way.
+wait_for_quiet: {max_other_cores: 3.0, timeout_s: 10}

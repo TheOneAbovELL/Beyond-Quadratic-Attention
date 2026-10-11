@@ -1,0 +1,27 @@
+# threads=1: these runs were made while other workloads on this machine kept ~12 logical CPUs busy; single-threaded
+# runs avoid OpenMP barrier stalls from descheduled threads, so contention degrades methods more evenly.
+# E3: Tile size in a Python-level tiled kernel trades interpreter overhead against working-set size.
+name: tile_sizes
+hypothesis: >
+  Small tiles => many Python iterations => dispatch overhead dominates. Large tiles => fewer
+  iterations but larger temporaries (approaching the naive memory footprint). Runtime should fall
+  steeply with tile size then flatten; tensor peak memory should grow ~quadratically in tile size.
+methods:
+  - {name: tiled, params: {q_tile: 32, kv_tile: 32}}
+  - {name: tiled, params: {q_tile: 64, kv_tile: 64}}
+  - {name: tiled, params: {q_tile: 128, kv_tile: 128}}
+  - {name: tiled, params: {q_tile: 256, kv_tile: 256}}
+  - {name: tiled, params: {q_tile: 512, kv_tile: 512}}
+  - {name: tiled_recompute, params: {q_tile: 32, kv_tile: 32}}
+  - {name: tiled_recompute, params: {q_tile: 128, kv_tile: 128}}
+  - {name: tiled_recompute, params: {q_tile: 512, kv_tile: 512}}
+  - naive
+  - sdpa_flash_cpu
+grid: {B: [1], H: [4], L: [2048], d: [64], dtype: [float32], causal: [false], threads: [1]}
+warmup: 1
+repeats: 5
+max_seconds_per_mode: 30
+stop_if_slower_than_s: 30
+isolate: false
+# Before each config, wait (bounded) for other processes to go quiet; load is recorded either way.
+wait_for_quiet: {max_other_cores: 3.0, timeout_s: 10}

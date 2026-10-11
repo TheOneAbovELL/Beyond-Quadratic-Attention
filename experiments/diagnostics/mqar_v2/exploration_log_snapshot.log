@@ -1,0 +1,22 @@
+lr=0.003 d=64 step 250 loss 1.939 acc 0.248 t=62s
+lr=0.003 d=64 step 500 loss 1.852 acc 0.242 t=125s
+lr=0.003 d=64 step 750 loss 1.774 acc 0.262 t=168s
+lr=0.003 d=64 step 1000 loss 1.791 acc 0.262 t=231s
+lr=0.003 d=64 step 1250 loss 1.783 acc 0.261 t=279s
+lr=0.003 d=64 pairs=4 L=32 step 250 loss 1.360 acc 0.lr=0.003 d=64 step 1750 loss 1.811 acc 0.260 t=382s
+.310 acc 0.326 t=56s
+lr=0.003 d=64 pairs=4 L=32 step 750 loss 1.305 acc 0.316 t=75s
+=== generator v2 ===
+lr=0.003 d=64 pairs=8 L=64 step 250 loss 2.254 acc 0.125 t=61s
+lr=0.003 d=64 pairs=8 L=64 step 500 loss 2.108 acc 0.127 t=108s
+lr=0.003 d=64 pairs=8 L=64 step 750 loss 2.107 acc 0.123 t=162s
+lr=0.003 d=64 pairs=8 L=64 step 1000 loss 2.088 acc 0.123 t=228s
+lr=0.003 d=64 pairs=8 L=64 step 1250 loss 2.087 acc 0.120 t=295s
+lr=0.003 d=64 pairs=8 L=64 step 1500 loss 2.090 acc 0.124 t=358s
+lr=0.003 d=64 pairs=8 L=64 step 1750 loss 2.084 acc 0.136 t=420s
+lr=0.003 d=64 pairs=8 L=64 step 2000 loss 2.082 acc 0.120 t=482s
+lr=0.003 d=64 pairs=8 L=64 step 2250 loss 2.080 acc 0.120 t=550s
+lr=0.003 d=64 pairs=8 L=64 step 2500 loss 2.082 acc 0.117 t=615s
+pairs=4 L=32 step 1750 losinduction lr=0.003 step 12lr=0.01 d=64mqar-plain lr=0.003 pairs=4 L=32 step 250 loss 1.511 lr=0.01 d=64 pairmqar-plain lr=0.003 pairs=4 L=32 step 500 loss 1lr=0.01 d=64 pairs=4 Lmqar-plain lr=0.003 pairs=4 L=32 step 750 llr=0.01 d=64 pairs=4 L=32 smqar-plain lr=0.003 pairs=4 L=32 step lr=0.01 d=64 pairs=4 L=32 step 300mqar-plain lr=0.003 pairs=4 L=32 step 1250 loss 1.396 acc 0.244 t=161s
+mqar-plain lr=0.003 pairs=4 L=32 step 1500 loss 1.398 acc 0.242 t=197s
+mqar-plain lr=0.003 pairs=4 L=32 step 1750 loss 1.390 acc 0.244 t=230s

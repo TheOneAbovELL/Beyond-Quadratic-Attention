@@ -1,0 +1,18 @@
+# Minimal benchmark: every method, tiny shapes. Should finish in well under a minute.
+name: smoke
+hypothesis: "All implementations run end-to-end and produce finite, correctly-shaped outputs."
+methods:
+  - naive
+  - sdpa_math
+  - sdpa_flash_cpu
+  - {name: tiled, params: {q_tile: 64, kv_tile: 64}}
+  - {name: tiled_recompute, params: {q_tile: 64, kv_tile: 64}}
+  - {name: local_window, params: {window: 32}}
+  - {name: block_sparse, params: {block_size: 32, local_blocks: 1, global_blocks: 1, random_blocks: 1}}
+  - linear_elu
+grid: {B: [1], H: [2], L: [64, 256], d: [32], dtype: [float32], causal: [false, true], threads: [4]}
+warmup: 1
+repeats: 3
+max_seconds_per_mode: 5
+stop_if_slower_than_s: 2.0
+isolate: false

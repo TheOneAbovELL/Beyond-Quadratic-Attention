@@ -1,0 +1,26 @@
+# threads=1: these runs were made while other workloads on this machine kept ~12 logical CPUs busy; single-threaded
+# runs avoid OpenMP barrier stalls from descheduled threads, so contention degrades methods more evenly.
+# E1b: timing-only re-run of E1 (memory already measured in the isolated scaling_exact run).
+# In-process, no profiler or reference passes, with a quiet-wait before each config and
+# background load recorded per measurement.
+name: scaling_exact_timing
+hypothesis: >
+  Exact methods' runtime grows ~L^2 at large L (exponent ~2). The fused CPU flash kernel is the
+  fastest exact method at every L; the Python tiled code is the slowest.
+methods:
+  - naive
+  - sdpa_math
+  - sdpa_flash_cpu
+  - {name: tiled, params: {q_tile: 128, kv_tile: 128}}
+  - {name: tiled_recompute, params: {q_tile: 128, kv_tile: 128}}
+grid: {B: [1], H: [4], L: [256, 512, 1024, 2048, 4096], d: [64], dtype: [float32], causal: [false], threads: [1]}
+warmup: 2
+repeats: 7
+max_seconds_per_mode: 20
+stop_if_slower_than_s: 8.0
+mem_fraction: 0.5
+max_mem_gb: 2.5
+measure_error: false
+measure_tensor_memory: false
+isolate: false
+wait_for_quiet: {max_other_cores: 3.0, timeout_s: 10}

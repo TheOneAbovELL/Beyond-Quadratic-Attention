@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "attention-lab-ui",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["lab.py", "ui", "--port", "8517", "--headless"],
+      "port": 8517
+    },
+    {
+      "name": "book-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8530", "--bind", "127.0.0.1", "--directory", "docs/book"],
+      "port": 8530
+    }
+  ]
+}

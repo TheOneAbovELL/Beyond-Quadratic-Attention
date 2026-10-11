@@ -1,0 +1,19 @@
+# E4: Thread scaling. Hypothesis: fused/BLAS-heavy kernels scale with threads up to the 6 physical
+# cores; Python-loop tiling scales poorly (small per-op work, serial interpreter).
+name: threads
+hypothesis: "Speedup from 1->6 threads is larger for sdpa_flash_cpu/naive than for tiled."
+methods:
+  - naive
+  - sdpa_flash_cpu
+  - {name: tiled, params: {q_tile: 128, kv_tile: 128}}
+  - {name: local_window, params: {window: 64}}
+  - linear_elu
+grid: {B: [1], H: [4], L: [2048], d: [64], dtype: [float32], causal: [false], threads: [1, 2, 4, 6]}
+warmup: 2
+repeats: 7
+max_seconds_per_mode: 30
+stop_if_slower_than_s: 60
+measure_error: false
+isolate: true
+# Before each config, wait (bounded) for other processes to go quiet; load is recorded either way.
+wait_for_quiet: {max_other_cores: 3.0, timeout_s: 10}

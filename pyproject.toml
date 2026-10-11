@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "attention-lab"
+version = "0.1.0"
+description = "Beyond Quadratic Attention: a local laboratory for exact, tiled, sparse and linear attention on CPU."
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "numpy",
+    "psutil",
+    "pyyaml",
+    "matplotlib",
+    "pandas",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit"]
+test = ["pytest"]
+
+[project.scripts]
+attention-lab = "attention_lab.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = "-q -p no:asyncio"
+markers = [
+    "slow: longer-running tests (deselect with -m 'not slow')",
+    "perf_smoke: tiny performance/resource smoke tests (no timing assertions)",
+]
+filterwarnings = [
+    "ignore:.*Profiler clears events.*:UserWarning",
+]
